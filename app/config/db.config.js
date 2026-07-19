@@ -1,11 +1,9 @@
 
-
 module.exports = {
- 
-  HOST: "ep-spring-silence-aufn2iwm-pooler.c-10.us-east-1.aws.neon.tech",
-  USER: "neondb_owner",
-  PASSWORD: "npg_J6gSehOCr4Uo",
-  DB: "neondb",
+  HOST: process.env.DB_HOST,
+  USER: process.env.DB_USER,
+  PASSWORD: process.env.DB_PASSWORD,
+  DB: process.env.DB_NAME,
   dialect: "postgres",
   pool: {
     max: 5,
@@ -13,7 +11,6 @@ module.exports = {
     acquire: 30000,
     idle: 10000
   }
-
 };
 
 
