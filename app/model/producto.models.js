@@ -1,34 +1,31 @@
 module.exports = (sequelize, Sequelize) => {
-  const Cliente = sequelize.define("cliente", { 
+  const Producto = sequelize.define("producto", { 
 
     nombre: {
       type: Sequelize.STRING,
       
     },
-    apellido: {
+    costo: {
       type: Sequelize.STRING
     },
-    email: {
+    precio: {
       type: Sequelize.STRING
     },
 
-    ingreso: {
-      type: Sequelize.DATE
-    },
-    telefono: {
-      type: Sequelize.STRING
-    },
     status: {
       type: Sequelize.BOOLEAN
+    },
+    stock: {
+      type: Sequelize.INTEGER
+    },
+    vencimiento: {
+      type: Sequelize.DATE                  
     }
 
     
   });
 
-  return Cliente;
-
+  return Producto;
 
   
 };
-
-

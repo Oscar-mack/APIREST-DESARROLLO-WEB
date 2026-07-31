@@ -40,7 +40,7 @@ db.sequelize = sequelize;
 db.clientes = require("./cliente.models.js")(sequelize, Sequelize);
 
 // Aquí puedes seguir importando otros modelos de forma similar
-// Ejemplo: db.productos = require("./producto.model.js")(sequelize, Sequelize);
+db.productos = require("./producto.models.js")(sequelize, Sequelize);
 
 // Exportamos el objeto `db` para que pueda ser usado por otros módulos (por ejemplo, en el `server.js`)
 module.exports = db;
