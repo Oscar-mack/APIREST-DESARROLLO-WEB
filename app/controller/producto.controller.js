@@ -15,6 +15,7 @@ exports.create = (req, res) => {
 
     // Create a Producto, definiendo una variable con la estructura del reques para luego solo ser enviada como parametro mas adelante. 
     const producto = {
+        id: req.body.id,
         nombre: req.body.nombre,
         costo: req.body.costo,
         precio: req.body.precio,
@@ -79,7 +80,7 @@ exports.update = (req, res) => {
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "Proudcto was updated successfully."
+                    message: "Producto  was updated successfully."
                 });
             } else {
                 res.send({

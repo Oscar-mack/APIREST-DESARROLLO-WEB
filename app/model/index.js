@@ -4,18 +4,23 @@ const dbConfig = require("../config/db.config.js");
 // Importamos Sequelize, el ORM que nos permite trabajar con PostgreSQL como objetos JS
 const Sequelize = require("sequelize");
 
-// Creamos una instancia de Sequelize con los parámetros de conexión, incluyendo SSL para NeonDB
+// Creamos una instancia de Sequelize con los parámetros de conexión.
+// SSL se mantiene habilitado por defecto para la base alojada y se puede desactivar con DB_SSL=false.
+const useSsl = String(process.env.DB_SSL).toLowerCase() !== "false";
+
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,            // Dirección del servidor (host) de la base de datos
   dialect: dbConfig.dialect,      // El tipo de base de datos, en este caso 'postgres'
 
   // Configuraciones específicas del dialecto (PostgreSQL), incluyendo la conexión segura SSL
-  dialectOptions: {
-    ssl: {
-      require: true,              // Indica que la conexión debe usar SSL obligatoriamente
-      rejectUnauthorized: false   // Acepta certificados autofirmados o no verificados (útil en entornos no productivos)
-    }
-  },
+  dialectOptions: useSsl
+    ? {
+        ssl: {
+          require: true,              // Indica que la conexión debe usar SSL obligatoriamente
+          rejectUnauthorized: false   // Acepta certificados autofirmados o no verificados (útil en entornos no productivos)
+        }
+      }
+    : {},
 
   // Configuración del pool de conexiones para optimizar el rendimiento
   pool: {
@@ -41,6 +46,20 @@ db.clientes = require("./cliente.models.js")(sequelize, Sequelize);
 
 // Aquí puedes seguir importando otros modelos de forma similar
 db.productos = require("./producto.models.js")(sequelize, Sequelize);
+
+// Importamos el modelo de departamento desde la carpeta 'model' y lo registramos en el objeto `db`
+// Le pasamos la instancia de conexión `sequelize` y la clase `Sequelize` como argumentos
+db.departamentos = require("./departamento.models.js")(sequelize, Sequelize);
+
+// Importamos el modelo de proveedor desde la carpeta 'model' y lo registramos en el objeto `db`
+db.proveedores = require("./proveedor.models.js")(sequelize, Sequelize);
+
+// Importamos el modelo de empleado desde la carpeta 'model' y lo registramos en el objeto `db`
+db.empleados = require("./empleado.models.js")(sequelize, Sequelize);
+
+
+
+
 
 // Exportamos el objeto `db` para que pueda ser usado por otros módulos (por ejemplo, en el `server.js`)
 module.exports = db;

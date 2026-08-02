@@ -17,14 +17,10 @@ module.exports = app => {
     router.delete("/delete/", producto.deleteAll);
     // Podemos utilizar como una ocpion app.use("EndPoint",router" para simplicar el URI
     // Ej.  http://localhost:Puerto/api/producto /
+
+    
     app.use("/api/producto", router);
 };
-
-
-
-
-
-
 
 
 

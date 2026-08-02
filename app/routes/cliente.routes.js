@@ -1,22 +1,24 @@
 module.exports = app => {
     const clientes = require("../controller/cliente.controller.js");
     var router = require("express").Router();
-    // Create a new Client
+    // Crear un nuevo Cliente
     router.post("/create/", clientes.create);
-    // Retrieve all Client
+    // Obtener todos los Clientes
     router.get("/", clientes.findAll);
-    // Retrieve all published Client
+    // Obtener todos los Clientes activos
     router.get("/status", clientes.findAllStatus);
-    // Retrieve a single Client with id
+    // Obtener un Cliente por id
     router.get("/:id", clientes.findOne);
-    // Update a Client with id
+    // Actualizar un Cliente por id
     router.put("/update/:id", clientes.update);
-    // Delete a Client with id
+    // Eliminar un Cliente por id
     router.delete("/delete/:id", clientes.delete);
-    // Delete all Cliente
+    // Eliminar todos los Clientes
     router.delete("/delete/", clientes.deleteAll);
-    // Podemos utilizar como una ocpion app.use("EndPoint",router" para simplicar el URI
-    // Ej.  http://localhost:Puerto/api/cliente/
-    app.use("/api/clientes", router);
+    // Podemos utilizar app.use("EndPoint", router) para simplificar el URI
+    // Ej. http://localhost:Puerto/api/cliente/
+    
+    
+    app.use("/api/cliente", router);
 };
 

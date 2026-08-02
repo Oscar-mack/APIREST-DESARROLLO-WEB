@@ -3,29 +3,28 @@ const db = require("../model");
 const Cliente = db.clientes;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Client
+// Crear y guardar un nuevo Cliente
 exports.create = (req, res) => {
-    // Validamos que dentro del  request no venga vacio el nombre, de lo contrario returna error
+    // Validamos que dentro del request no venga vacio el nombre, de lo contrario retorna error
     if (!req.body.nombre) {
         res.status(400).send({
-            message: "Content can not be empty!"
+            message: "El contenido no puede estar vacio."
         });
         return;
     }
 
-    // Create a Client, definiendo una variable con la estructura del reques para luego solo ser enviada como parametro mas adelante. 
+    // Crear un Cliente con la estructura del request para enviarla al modelo.
     const cliente = {
         nombre: req.body.nombre,
         apellido: req.body.apellido,
-        direccion: req.body.direccion, 
-        correo: req.body.correo,
+        email: req.body.email || req.body.correo,
         telefono: req.body.telefono,
         ingreso: req.body.ingreso,
-        // utilizando ? nos ayuda a indicar que el paramatro puede ser opcional dado que si no viene, le podemos asignar un valor default
+        // Si status no viene en el request, se asigna false por defecto.
         status: req.body.status ? req.body.status : false
     };
 
-    // Save a new Client into the database
+    // Guardar un nuevo Cliente en la base de datos
     Cliente.create(cliente)
         .then(data => {
             res.send(data);
@@ -33,12 +32,12 @@ exports.create = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while creating the Client."
+                    err.message || "Ocurrio un error al crear el Cliente."
             });
         });
 };
 
-// Retrieve all Client from the database.
+// Obtener todos los Clientes de la base de datos.
 exports.findAll = (req, res) => {
     const nombre = req.query.nombre;
     var condition = nombre ? { nombre: { [Op.iLike]: `%${nombre}%` } } : null;
@@ -50,12 +49,12 @@ exports.findAll = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving clients."
+                    err.message || "Ocurrio un error al obtener los clientes."
             });
         });
 };
 
-// Find a single Tutorial with an id
+// Obtener un Cliente por id
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
@@ -65,12 +64,12 @@ exports.findOne = (req, res) => {
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error retrieving Cliente with id=" + id
+                message: "Error al obtener el Cliente con id=" + id
             });
         });
 };
 
-// Update a Tutorial by the id in the request
+// Actualizar un Cliente por el id enviado en el request
 exports.update = (req, res) => {
     const id = req.params.id;
 
@@ -80,64 +79,64 @@ exports.update = (req, res) => {
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "Cliente was updated successfully."
+                    message: "El Cliente fue actualizado correctamente."
                 });
             } else {
                 res.send({
-                    message: `Cannot update Client with id=${id}. Maybe Client was not found or req.body is empty!`
+                    message: `No se pudo actualizar el Cliente con id=${id}. Puede que no exista o que req.body este vacio.`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error updating Client with id=" + id
+                message: "Error al actualizar el Cliente con id=" + id
             });
         });
 };
 
-// Delete a Client with the specified id in the request
+// Eliminar un Cliente por el id recibido en el request
 exports.delete = (req, res) => {
     const id = req.params.id;
-    // utilizamos el metodo destroy para eliminar el objeto mandamos la condicionante where id = parametro que recibimos 
+    // Utilizamos destroy para eliminar el objeto con el id recibido.
     Cliente.destroy({
         where: { id: id }
     })
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "Client was deleted successfully!"
+                    message: "El Cliente fue eliminado correctamente."
                 });
             } else {
                 res.send({
-                    message: `Cannot delete Client with id=${id}. El cliente no fue encontado!`
+                    message: `No se pudo eliminar el Cliente con id=${id}. El cliente no fue encontrado.`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Could not delete Tutorial with id=" + id
+                message: "No se pudo eliminar el Cliente con id=" + id
             });
         });
 };
 
-// Delete all Clients from the database.
+// Eliminar todos los Clientes de la base de datos.
 exports.deleteAll = (req, res) => {
     Cliente.destroy({
         where: {},
         truncate: false
     })
         .then(nums => {
-            res.send({ message: `${nums} Clients were deleted successfully!` });
+            res.send({ message: `Se eliminaron ${nums} clientes correctamente.` });
         })
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while removing all clients."
+                    err.message || "Ocurrio un error al eliminar todos los clientes."
             });
         });
 };
 
-// find all active Client, basado en el atributo status vamos a buscar que solo los clientes activos
+// Obtener todos los Clientes activos usando el atributo status.
 exports.findAllStatus = (req, res) => {
     Cliente.findAll({ where: { status: true } })
         .then(data => {
@@ -146,7 +145,7 @@ exports.findAllStatus = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving Client."
+                    err.message || "Ocurrio un error al obtener los clientes activos."
             });
         }); 
 };
