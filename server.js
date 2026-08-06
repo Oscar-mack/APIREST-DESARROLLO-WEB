@@ -1,5 +1,16 @@
-// Importamos el modulo express 
-require("dotenv").config();
+// Importamos el modulo express
+
+const dotenv = require("dotenv");
+
+const envFile =
+  process.env.NODE_ENV === "production"
+    ? ".env.production"
+    : ".env.development";
+
+dotenv.config({
+  path: envFile
+});
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
