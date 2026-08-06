@@ -1,5 +1,3 @@
-// Importamos el modulo express
-
 const dotenv = require("dotenv");
 
 const envFile =
